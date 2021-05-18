@@ -1,7 +1,7 @@
 % generates a list of search points based on the max and min limits of
 % the MEMS and the desired number of points 
 
-function output = gridmatrix(xpts,ypts,n_points,minsep,rflag)
+function output = gridmatrixNEW(xpts,ypts,n_points,minsep,rflag)
 
 
 if max(max(abs(xpts)),max(abs(ypts)))>1
@@ -27,10 +27,11 @@ else
     [p,q] = meshgrid(unit_x, unit_y);
     temp = [p(:) q(:)];
     if rflag==1
-        output = temp(randperm(size(temp,1)),:); %randomizes rows for search    %% warum notwendig random zu suchen
+        output = temp(randperm(size(temp,1)),:); %randomizes rows for search    
     else
         output = temp;
     end
+    disp(string(n_points)+'x'+string(n_points)+'matrix created')
    
  
 end
