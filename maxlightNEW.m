@@ -1,4 +1,4 @@
-function [max_MEMS,max_image,max_light,maxsnap,found] = maxlightNEW(searchpts,max_light,gain,exposure,vid,max_MEMS,maxsnap,mMTIDevice) 
+function [max_MEMS,max_image,max_light,maxsnap,found] = maxlightNEW(searchpts,max_light,gain,exposure,vid,max_MEMS,maxsnap) %,mMTIDevice
 
 found = 0;
 max_image = zeros(1,2);
@@ -11,7 +11,7 @@ disp('searching stronger light')
      if xpos>1
         break;
      end
-    tempsnap = PhotographCertainPoint(gain,exposure,vid,xpos,ypos,maxCoord,mMTIDevice); 
+    tempsnap = PhotographCertainPoint(gain,exposure,vid,xpos,ypos,maxCoord); %,mMTIDevice
     
     light_int = max(max(tempsnap(1:355,45:370)));
     

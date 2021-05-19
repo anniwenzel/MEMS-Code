@@ -31,7 +31,7 @@ else
     else
         output = temp;
     end
-    disp(string(n_points)+'x'+string(n_points)+'matrix created')
+    disp(string(n_points)+'x'+string(n_points)+' matrix created')
    
  
 end
