@@ -1,7 +1,7 @@
-function tempsnap=PhotographCertainPoint(gain,exposure,vid,xpos,ypos,coords) %,mMTIDevice
-    %if coords<=1
-       % mirror.GoToDevicePosition(xpos,ypos,255,2); %go to new position in 2ms
-    %end
+function tempsnap=PhotographCertainPoint(gain,exposure,vid,xpos,ypos,coords,mMTIDevice) %,mMTIDevice
+    if coords<=1
+       mirror.GoToDevicePosition(xpos,ypos,255,2); %go to new position in 2ms
+    end
     
     pause(0.02);
     try

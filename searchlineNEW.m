@@ -3,7 +3,7 @@
 % FUNCTION FOR SEARCHING ALONG RECTANGLE POINTS
 
 
-function coordlist = searchlineNEW(searchpts,count,light_thresh,gain,exposure,vid)%,mMTIDevice
+function coordlist = searchlineNEW(searchpts,count,light_thresh,gain,exposure,vid,mMTIDevice)%,mMTIDevice
 
 Saferange= 5e-02;
 i=1;
@@ -15,7 +15,7 @@ while i<size(searchpts,1)
         break;
      end
     
-    tempsnap=PhotographCertainPoint(gain,exposure,vid,xpos,ypos,maxCoord); %,mMTIDevice
+    tempsnap=PhotographCertainPoint(gain,exposure,vid,xpos,ypos,maxCoord,mMTIDevice); %,mMTIDevice
     
 
     light_int = max(max(tempsnap));

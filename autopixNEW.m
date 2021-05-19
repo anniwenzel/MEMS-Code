@@ -39,7 +39,7 @@ DebugLimitCoords = 0;
 DebugGainExposure = 1;
 
 %% Initialize MEMS
-%InitializeMEMS
+InitializeMEMS
 
 %% create videoobject
 vid = CreateVideoobject()
@@ -67,7 +67,7 @@ thirdfound=0;
 
 while found==0
     [xpts,ypts] = DetermineCoordinateLimits(DebugLimitCoords);
-    [found,light_MEMS,light_image,light_int,snap] = CreateMatrixAndSearchForLight(xpts,ypts,minsep,light_thresh,gain,exposure,vid); %,mMTIDevice
+    [found,light_MEMS,light_image,light_int,snap] = CreateMatrixAndSearchForLight(xpts,ypts,minsep,light_thresh,gain,exposure,vid,mMTIDevice); %,mMTIDevice
     
     if found==0
      disp('No light found. Please enter new search region.')
@@ -83,7 +83,7 @@ if found==1
     max_light=light_int;
     maxsnap=snap;
     nearpts1=gridmatrixNEW([max_MEMS(1)-nearng max_MEMS(1)+nearng],[max_MEMS(2)-nearng max_MEMS(2)+nearng],7,minsep,0); 
-    [max_MEMS,max_image,max_light,maxsnap,maxfound] = maxlightNEW(nearpts1,max_light,gain,exposure,vid,max_MEMS,maxsnap);%,mMTIDevice
+    [max_MEMS,max_image,max_light,maxsnap,maxfound] = maxlightNEW(nearpts1,max_light,gain,exposure,vid,max_MEMS,maxsnap,mMTIDevice);%,mMTIDevice
 end
 
   firstpix=max_MEMS;
@@ -94,7 +94,7 @@ end
 
 
 %after epixel has been maximized, search for a neighbouring epixel
-[foundneigh,neigh_MEMS,neigh_image,neigh_int,neigh_snap] = CreateNeighbourAreaAndSearch(max_MEMS,minsep,saferange,howfar,light_thresh,gain,exposure,vid);%,mMTIDevice
+[foundneigh,neigh_MEMS,neigh_image,neigh_int,neigh_snap] = CreateNeighbourAreaAndSearch(max_MEMS,minsep,saferange,howfar,light_thresh,gain,exposure,vid,mMTIDevice);%,mMTIDevice
 
 % maximize neighbour output
 if foundneigh==1
@@ -103,7 +103,7 @@ if foundneigh==1
     maxneighsnap=neigh_snap;
 %     while maxneighfound>0
        nearpts2=gridmatrixNEW([maxneigh_MEMS(1)-nearng maxneigh_MEMS(1)+nearng],[maxneigh_MEMS(2)-nearng maxneigh_MEMS(2)+nearng],7,minsep,0);
-       [maxneigh_MEMS,maxneigh_image,maxneigh_light,maxneighsnap,maxneighfound] = maxlightNEW(nearpts2,maxneigh_light,gain,exposure,vid,maxneigh_MEMS,maxneighsnap);%,mMTIDevice
+       [maxneigh_MEMS,maxneigh_image,maxneigh_light,maxneighsnap,maxneighfound] = maxlightNEW(nearpts2,maxneigh_light,gain,exposure,vid,maxneigh_MEMS,maxneighsnap,mMTIDevice);%,mMTIDevice
 %     end
 
     secondpix=maxneigh_MEMS;
@@ -115,7 +115,7 @@ if foundneigh==1
     % try to find a 3rd pixel with new window centered at midpoint of two
     % found points
      center = CalculateCenterOfFoundPoints(firstpix,secondpix);
-    [thirdfound,third_MEMS,third_image,third_int,thirdsnap] = CreateThirdAreaAndSearch(center,thirdsearch,minsep,light_thresh,gain,exposure,vid);%,mMTIDevice
+    [thirdfound,third_MEMS,third_image,third_int,thirdsnap] = CreateThirdAreaAndSearch(center,thirdsearch,minsep,light_thresh,gain,exposure,vid,mMTIDevice);%,mMTIDevice
     
     if thirdfound == 0
         disp('Third pixel not found.')
@@ -127,7 +127,7 @@ if foundneigh==1
         maxthirdsnap=thirdsnap;
    
         nearpts3=gridmatrixNEW([maxthird_MEMS(1)-nearng maxthird_MEMS(1)+nearng],[maxthird_MEMS(2)-nearng maxthird_MEMS(2)+nearng],7,minsep,0);
-        [maxthird_MEMS,maxthird_image,maxthird_light,maxthirdsnap,maxthirdfound] = maxlightNEW(nearpts3,maxthird_light,gain,exposure,vid,maxthird_MEMS,maxthirdsnap);%,mMTIDevice
+        [maxthird_MEMS,maxthird_image,maxthird_light,maxthirdsnap,maxthirdfound] = maxlightNEW(nearpts3,maxthird_light,gain,exposure,vid,maxthird_MEMS,maxthirdsnap,mMTIDevice);%,mMTIDevice
     
        % display maxthirdsnap:
          displayMaxsnap(maxthirdsnap,3)
@@ -151,12 +151,12 @@ if thirdfound==1
     [xs,ys] = DefineLineFromPointsFound(foundpts); 
     [xv,yv] = CreatePolygonCornercoordinates(xs,ys,epsilon); 
     linegrid = CreatePolygonMatrix(xv,yv,density,minsep);
-    linelist = searchlineNEW(linegrid,ncount,light_thresh,gain,exposure,vid) %,mMTIDevice
+    linelist = searchlineNEW(linegrid,ncount,light_thresh,gain,exposure,vid,mMTIDevice) %,mMTIDevice
     
     mkdir lightcoordinates;
     save('lightcoordinates/linelist.mat','linelist');
     
-    PicturesOfEveryLightpoint(linelist,gain,exposure,vid) %,mMTIDevice
+    PicturesOfEveryLightpoint(linelist,gain,exposure,vid,mMTIDevice) %,mMTIDevice
 end
    
 
@@ -164,16 +164,16 @@ end
 toc
 delete(vid);
 clear('vid');
-%CloseMEMS;
+CloseMEMS;
 display('Closed successfully..');
 
-%catch ex
-   % display('Application failed to run properly!');
-    %toc
-   % pause(1)
-  %  CloseMEMS;
-   % delete(vid);
-    %clear('vid');
-   % display('Closed in final catch..');
-    %rethrow(ex)
-%end
+catch ex
+    display('Application failed to run properly!');
+    toc
+    pause(1)
+    CloseMEMS;
+    delete(vid);
+    clear('vid');
+    display('Closed in final catch..');
+    rethrow(ex)
+end
