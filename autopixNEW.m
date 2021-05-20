@@ -20,21 +20,21 @@ clear; %clf reset; clc;
 
 %% Initialize USB camera and parameters
 % load('C:\Users\JPGroup\Documents\mems mirror\autopix\snapshots.mat')                                    
-light_thresh = 170; % threshold for light to be detected in that coordinate
+light_thresh = 150; % threshold for light to be detected in that coordinate
 minsep=5e-4; %min acceptable MEMS coordinate, for creating matrices                             
 % maximizing search param
 nearng=20*minsep; %range near foundpixel used to maximize output                                  
 % neighbor search params
-howfar=50e-2; %range to search for a neighbour after safe range (multiples of minsep) %5e-02
-saferange = 10e-2; %distance away from first pixel where neighbour will not be searched  %5e-02
+howfar=10e-2; %range to search for a neighbour after safe range (multiples of minsep) %5e-02
+saferange =10e-2; %distance away from first pixel where neighbour will not be searched  %5e-02
 
 % third pixel search params
 thirdsearch=5*nearng; %range from midpoint of first and second pixels to search for third       %thirdsearch+nearng      
 
 % line search params
-epsilon=0.003; % distance above and below line to search for other epixels                        
-density=700; % density of grid for search above line
-ncount=5; %number of light points along line to find and store before quitting                    
+epsilon=0.003; % distance above and below line to search for other epixels   %0.003                     
+density=700; % density of grid for search above line %700
+ncount=15; %number of light points along line to find and store before quitting                    
 DebugLimitCoords = 0;
 DebugGainExposure = 1;
 
@@ -59,7 +59,7 @@ end
 
 %% Loops until finding light in the designated search area
 tic
-%try
+try
 
 found=0;
 thirdfound=0;
@@ -151,7 +151,7 @@ if thirdfound==1
     [xs,ys] = DefineLineFromPointsFound(foundpts); 
     [xv,yv] = CreatePolygonCornercoordinates(xs,ys,epsilon); 
     linegrid = CreatePolygonMatrix(xv,yv,density,minsep);
-    linelist = searchlineNEW(linegrid,ncount,light_thresh,gain,exposure,vid,mMTIDevice) %,mMTIDevice
+    linelist = searchlineNEW(linegrid,ncount,light_thresh,gain,exposure,vid,nearng,minsep,mMTIDevice) %,mMTIDevice 
     
     mkdir lightcoordinates;
     save('lightcoordinates/linelist.mat','linelist');

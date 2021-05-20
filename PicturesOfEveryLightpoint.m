@@ -5,7 +5,7 @@ function PicturesOfEveryLightpoint(linelist,gain,exposure,vid,mMTIDevice)%Device
     for i=1:size(linelist,1)
      x_light = linelist(i,1);
      y_light = linelist(i,2);
-     mirror.GoToDevicePosition(xpos,ypos,255,2);
+     mMTIDevice.GoToDevicePosition(x_light,y_light,255,2);
      pause(0.02);
      imageI = takeImg(gain,exposure,vid);
     

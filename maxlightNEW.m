@@ -13,7 +13,7 @@ disp('searching stronger light')
      end
     tempsnap = PhotographCertainPoint(gain,exposure,vid,xpos,ypos,maxCoord,mMTIDevice); %,mMTIDevice
     
-    light_int = max(max(tempsnap(1:355,45:370)));
+    light_int = max(max(tempsnap));
     
     if light_int>max_light
        [found,max_MEMS,max_image,maxsnap,max_light] = SetMaxlightParameters(searchpts,light_int,tempsnap,i);

@@ -3,9 +3,9 @@
 % FUNCTION FOR SEARCHING ALONG RECTANGLE POINTS
 
 
-function coordlist = searchlineNEW(searchpts,count,light_thresh,gain,exposure,vid,mMTIDevice)%,mMTIDevice
+function coordlist = searchlineNEW(searchpts,count,light_thresh,gain,exposure,vid,nearng,minsep,mMTIDevice)%,mMTIDevice
 
-Saferange= 5e-02;
+Saferange= 5e-03;
 i=1;
     
 while i<size(searchpts,1)
@@ -21,15 +21,25 @@ while i<size(searchpts,1)
     light_int = max(max(tempsnap));
     if light_int>light_thresh
         disp('Line light found!')
+        
+       
         coordlist(count,:) = searchpts(i,:);
-        coords = coordlist(count,:)
+        
+        max_MEMS = coordlist(count,:);
+        max_light=light_int;
+        maxsnap=tempsnap;
+   
+        nearpts=gridmatrixNEW([max_MEMS(1)-nearng max_MEMS(1)+nearng],[max_MEMS(2)-nearng max_MEMS(2)+nearng],7,minsep,0);
+        [max_MEMS,max_image,max_light,maxsnap,maxfound] = maxlightNEW(nearpts,max_light,gain,exposure,vid,max_MEMS,maxsnap,mMTIDevice);
+        
+        coordlist(count,:)= max_MEMS;
         pause(0.02);
         count=count-1;
         
-        xtop=coords(1)+Saferange;
-        xbottom=coords(1)-Saferange;
-        ytop=coords(2)+Saferange;
-        ybottom=coords(2)-Saferange; 
+        xtop=max_MEMS(1)+Saferange;
+        xbottom=max_MEMS(1)-Saferange;
+        ytop=max_MEMS(2)+Saferange;
+        ybottom=max_MEMS(2)-Saferange; 
         
         
         for a=1:size(searchpts,1)
@@ -44,7 +54,7 @@ while i<size(searchpts,1)
         size(Test)
         searchpts=searchpts(~Test,:);
         clear('Test'); 
-       
+        
         if count==0
             break;
         end

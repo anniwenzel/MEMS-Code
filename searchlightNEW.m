@@ -17,7 +17,7 @@ for i=1:size(searchpts,1)
      end
     
     tempsnap=PhotographCertainPoint(gain,exposure,vid,xpos,ypos,maxCoord,mMTIDevice);  %,mMTIDevice
-
+    
     light_int = max(max(tempsnap));
     if light_int>light_thresh
        [found,light_MEMS,light_image,light_snap] = SetLightParameters(searchpts,light_int,tempsnap,i);
