@@ -3,6 +3,8 @@
 % variables, and the target device at serial port
 path(path,'C:\MirrorcleTech\SDK-Matlab\MTIDeviceMatlab');
 addpath 'C:\Users\awenzel\Downloads\autopix';
+%addpath 'D:\fdchen\NewCode\MEMS-Code-main';
+
 mMTIDevice = MTIDevice;
 tic
 
