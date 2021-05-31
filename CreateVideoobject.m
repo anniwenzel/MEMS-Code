@@ -3,6 +3,8 @@ vid = videoinput('winvideo',2)
 vid.ReturnedColorSpace = 'grayscale';
 src = getselectedsource(vid);
 vid.FramesPerTrigger = 1;
+triggerconfig(vid,'manual');
+set(vid,'TriggerRepeat',inf);
 
 src.Gamma = 100;
 src.Gain = 20;

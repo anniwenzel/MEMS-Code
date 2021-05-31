@@ -1,4 +1,4 @@
-function [max_MEMS,max_image,max_light,maxsnap,found] = maxlightNEW(searchpts,max_light,gain,exposure,vid,max_MEMS,maxsnap,mMTIDevice) %,mMTIDevice
+function [max_MEMS,max_image,max_light,maxsnap,found] = maxlightNEW(searchpts,max_light,gain,exposure,vid,max_MEMS,maxsnap,mMTIDevice,NumberBrightPixels) %,mMTIDevice
 
 found = 0;
 max_image = zeros(1,2);
@@ -15,16 +15,16 @@ disp('searching stronger light')
     
 %     light_int = max(max(tempsnap));
     sorted_snap=sort(tempsnap(:));
-    light_int=mean(sorted_snap(end-100:end));
+    light_int=mean(sorted_snap(end-NumberBrightPixels:end));
     
     if light_int>max_light
        [found,max_MEMS,max_image,maxsnap,max_light] = SetMaxlightParameters(searchpts,light_int,tempsnap,i);
     end
     
-    if max_light>252
-        break;
-    end
+    %if max_light>252
+       % break;
+   % end
     
  end
- imshow(maxsnap)
+
 end

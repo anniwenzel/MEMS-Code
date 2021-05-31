@@ -1,0 +1,2 @@
+CloseMEMS
+stop(vid)

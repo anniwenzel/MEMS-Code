@@ -1,5 +1,6 @@
 function max_val=CalculateMaxValue(vid)
-    start(vid);
+    start(vid)
+    trigger(vid);
     input_img = getdata(vid);
     stop(vid);
     %average = sum(input_img(:))/(2048*1536);
